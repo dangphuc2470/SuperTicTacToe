@@ -10,30 +10,23 @@ using System.Windows.Forms;
 
 namespace SuperTicTacToe
 {
-    public class CustomButton : Button
-    {
-        public string Checked { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Table { get; set; }
-        public int NextTable { get; set; }
-    }
 
-    
     public partial class Main : Form
     {
         public int ChosenTable = 0;
         public List<List<CustomButton>> buttonList = new List<List<CustomButton>>();         //buttonList[y][x]
         public List<List<CustomButton>> smallTableAndOrder = new List<List<CustomButton>>(); //smallTableAndOrder[smalltable][order]
         public string turn = "X";
+        public static int SQUARE_SIZE = 70;
+
+
         public Main()
         {
             InitializeComponent();
         }
-        public static int SQUARE_SIZE = 70;
         private void Main_Load(object sender, EventArgs e)
         {
-           Button lastButton = new Button() { Width = 0, Location = new Point(0, 0) };
+            Button lastButton = new Button() { Width = 0, Location = new Point(0, 0) };
             int padding = 10;
             int[] nextTableCount = new int[10];
             for (int i = 0; i < 10; i++)
@@ -51,7 +44,7 @@ namespace SuperTicTacToe
                 {
                     CustomButton button = new CustomButton()
                     {
-                        BackColor = Color.White,
+                        BackColor = Color.Wheat,
                         FlatStyle = FlatStyle.Flat,
                         Width = SQUARE_SIZE,
                         Height = SQUARE_SIZE,
@@ -62,7 +55,6 @@ namespace SuperTicTacToe
                         Checked = "",
                     };
                     button.FlatAppearance.BorderColor = Color.Gainsboro;
-                    button.BackColor = Color.White;
                     button.Click += btn_Click;
                     pnTable.Controls.Add(button);
                     buttonList[y].Add(button);
@@ -174,13 +166,38 @@ namespace SuperTicTacToe
 
         private void btn_Click(object? sender, EventArgs e)
         {
-            CustomButton button = sender as CustomButton;
-            if (button.Checked == "")
-            {
-                button.Checked = turn;
+            
+            CustomButton? button = sender as CustomButton;
+            if (button?.BackColor != Color.Wheat)
+                return;
+            ChangeAllButtonColor(Color.Wheat, Color.White);
 
-                ///Test
-                button.BackColor = Color.Black;
+            if (button?.Checked == "")
+            {
+                bool havingEmptyButton = false;
+                //Check if the next table have empty button, if not, NextTable = 0 meaning player can go anywhere
+                for (int i = 1; i <= 9; i++)
+                {
+                    if (smallTableAndOrder[button.NextTable][i].BackColor == Color.White)
+                    {
+                        smallTableAndOrder[button.NextTable][i].BackColor = Color.Wheat;
+                        havingEmptyButton = true;
+                    }
+                }
+                if (!havingEmptyButton)
+                {
+                    button.NextTable = 0;
+                    ChangeAllButtonColor(Color.White, Color.Wheat);
+                }
+
+                //Mark player move
+                button.Checked = turn;
+                if (turn == "X")
+                    button.BackColor = Color.FromArgb(128, 128, 255);
+                else
+                    button.BackColor = Color.FromArgb(255, 128, 128);
+                TurnChange();
+                ChosenTable = button.NextTable;
             }
             //if (button.BackColor == Color.Black)
             //    return;
@@ -206,7 +223,29 @@ namespace SuperTicTacToe
             //else
             //    button.BackColor = Color.Black;
             //ChosenTable = button.NextTable;
-            
+
+        }
+
+        private void ChangeAllButtonColor(Color from, Color to)
+        {
+            for (int y = 0; y < 9; y++)
+            {
+                for (int x = 0; x < 9 + 1; x++)
+                {
+                    if (buttonList[y][x].BackColor == from)
+                    {
+                        buttonList[y][x].BackColor = to;
+                    }
+                }
+            }
+        }
+
+        private void TurnChange()
+        {
+            if (turn == "X")
+                turn ="Y";
+            else 
+                turn = "X";
         }
     }
 }

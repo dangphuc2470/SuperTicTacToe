@@ -42,7 +42,7 @@
             pnTable.Controls.Add(panel1);
             pnTable.Location = new Point(55, 61);
             pnTable.Name = "pnTable";
-            pnTable.Size = new Size(746, 741);
+            pnTable.Size = new Size(746, 710);
             pnTable.TabIndex = 0;
             // 
             // panel2
