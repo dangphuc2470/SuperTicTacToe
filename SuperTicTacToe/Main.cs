@@ -25,7 +25,7 @@ namespace SuperTicTacToe
         public int ChosenTable = 0;
         public List<List<CustomButton>> buttonList = new List<List<CustomButton>>();         //buttonList[y][x]
         public List<List<CustomButton>> smallTableAndOrder = new List<List<CustomButton>>(); //smallTableAndOrder[smalltable][order]
-        public int 
+        public string turn = "X";
         public Main()
         {
             InitializeComponent();
@@ -175,30 +175,37 @@ namespace SuperTicTacToe
         private void btn_Click(object? sender, EventArgs e)
         {
             CustomButton button = sender as CustomButton;
-            if (button.BackColor == Color.Black)
-                return;
-            bool notCheckedAll = false;
-            for (int i = 1; i < 10; i++)
+            if (button.Checked == "")
             {
-                smallTableAndOrder[button.NextTable][i].ForeColor = Color.Wheat;
-                if (button.BackColor != Color.Black)
-                    notCheckedAll = true;
-            }
-            if (!notCheckedAll)
-            {
-                ChosenTable = 0;
-            }
+                button.Checked = turn;
 
-            if (ChosenTable!= 0)
-            {
-                if (button.Table == ChosenTable)
-                    button.BackColor = Color.Black;
-                else
-                    return;
-            }
-            else
+                ///Test
                 button.BackColor = Color.Black;
-            ChosenTable = button.NextTable;
+            }
+            //if (button.BackColor == Color.Black)
+            //    return;
+            //bool notCheckedAll = false;
+            //for (int i = 1; i < 10; i++)
+            //{
+            //    smallTableAndOrder[button.NextTable][i].ForeColor = Color.Wheat;
+            //    if (button.BackColor != Color.Black)
+            //        notCheckedAll = true;
+            //}
+            //if (!notCheckedAll)
+            //{
+            //    ChosenTable = 0;
+            //}
+
+            //if (ChosenTable!= 0)
+            //{
+            //    if (button.Table == ChosenTable)
+            //        button.BackColor = Color.Black;
+            //    else
+            //        return;
+            //}
+            //else
+            //    button.BackColor = Color.Black;
+            //ChosenTable = button.NextTable;
             
         }
     }
