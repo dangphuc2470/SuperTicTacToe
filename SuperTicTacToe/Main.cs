@@ -26,6 +26,7 @@ namespace SuperTicTacToe
         }
         private void Main_Load(object sender, EventArgs e)
         {
+            btTurn.BackColor = Color.FromArgb(128, 128, 255);
             Button lastButton = new Button() { Width = 0, Location = new Point(0, 0) };
             int padding = 10;
             int[] nextTableCount = new int[10];
@@ -40,8 +41,12 @@ namespace SuperTicTacToe
             for (int y = 0; y < 9; y++)
             {
                 buttonList.Add(new List<CustomButton>());
-                for (int x = 0; x < 9 + 1; x++)
+                for (int x = 0; x <= 9; x++)
                 {
+                    CustomButton buttonRepresentFor3x3Table = new CustomButton();
+                    buttonRepresentFor3x3Table.BackColor = Color.White;
+                    smallTableAndOrder[0].Add(buttonRepresentFor3x3Table);  //This button does not show in the table, only use it's color to check for all game win
+
                     CustomButton button = new CustomButton()
                     {
                         BackColor = Color.Wheat,
@@ -166,7 +171,8 @@ namespace SuperTicTacToe
 
         private void btn_Click(object? sender, EventArgs e)
         {
-            
+
+
             CustomButton? button = sender as CustomButton;
             if (button?.BackColor != Color.Wheat)
                 return;
@@ -193,37 +199,89 @@ namespace SuperTicTacToe
                 //Mark player move
                 button.Checked = turn;
                 if (turn == "X")
+                {
                     button.BackColor = Color.FromArgb(128, 128, 255);
+                    btTurn.BackColor = Color.FromArgb(255, 128, 128);
+                }
                 else
+                {
                     button.BackColor = Color.FromArgb(255, 128, 128);
+                    btTurn.BackColor = Color.FromArgb(128, 128, 255);
+
+                }
+                string s = WinnerCheck(button.Checked, smallTableAndOrder[ChosenTable]).ToString();
+                if (s != "")
+                {
+                    MessageBox.Show(s);
+                    ChangeSmallTableButtonColor(button.BackColor, ChosenTable); //Next table equal the order in the small table
+                    //MessageBox.Show(WinnerCheck(button.Checked, smallTableAndOrder[0]).ToString());
+
+                    //    for (int i = 1; i <= 9; i++)
+                    //        MessageBox.Show(smallTableAndOrder[0][i].BackColor.ToString() + i);
+                    //
+                }
                 TurnChange();
                 ChosenTable = button.NextTable;
             }
-            //if (button.BackColor == Color.Black)
-            //    return;
-            //bool notCheckedAll = false;
-            //for (int i = 1; i < 10; i++)
-            //{
-            //    smallTableAndOrder[button.NextTable][i].ForeColor = Color.Wheat;
-            //    if (button.BackColor != Color.Black)
-            //        notCheckedAll = true;
-            //}
-            //if (!notCheckedAll)
-            //{
-            //    ChosenTable = 0;
-            //}
 
-            //if (ChosenTable!= 0)
-            //{
-            //    if (button.Table == ChosenTable)
-            //        button.BackColor = Color.Black;
-            //    else
-            //        return;
-            //}
-            //else
-            //    button.BackColor = Color.Black;
-            //ChosenTable = button.NextTable;
 
+        }
+
+        private void ChangeSmallTableButtonColor(Color backColor, int currentOrder)
+        {
+            for (int i = 0; i <= 9; i++)
+            {
+                smallTableAndOrder[ChosenTable][i].BackColor = backColor;
+            }
+            smallTableAndOrder[0][currentOrder].BackColor = backColor; //button only represent for 3x3 table, not showing 
+            smallTableAndOrder[0][currentOrder].Checked = turn;
+            for (int i=1; i<=9; i++)
+            {
+                MessageBox.Show(smallTableAndOrder[0][i].Checked + i);
+            }
+
+        }
+
+        private string? WinnerCheck(string Checked, List<CustomButton> smallTable)
+        {
+            if (ChosenTable != 0)
+            {
+                bool isWin = false;
+                if (smallTable[1].Checked == Checked && smallTable[1].Checked == smallTable[2].Checked &&
+                smallTable[2].Checked == smallTable[3].Checked)
+                    isWin = true;
+
+                if (smallTable[1].Checked == Checked && smallTable[1].Checked == smallTable[4].Checked &&
+                smallTable[4].Checked == smallTable[7].Checked)
+                    isWin = true;
+
+                if (smallTable[1].Checked == Checked && smallTable[1].Checked == smallTable[5].Checked &&
+                    smallTable[5].Checked == smallTable[9].Checked)
+                    isWin = true;
+
+                if (smallTable[2].Checked == Checked && smallTable[2].Checked == smallTable[5].Checked &&
+                    smallTable[5].Checked == smallTable[8].Checked)
+                    isWin = true;
+
+                if (smallTable[3].Checked == Checked && smallTable[3].Checked == smallTable[6].Checked &&
+                    smallTable[6].Checked == smallTable[9].Checked)
+                    isWin = true;
+
+                if (smallTable[3].Checked == Checked && smallTable[3].Checked == smallTable[5].Checked &&
+                    smallTable[5].Checked == smallTable[7].Checked)
+                    isWin = true;
+
+                if (smallTable[4].Checked == Checked && smallTable[4].Checked == smallTable[5].Checked &&
+                    smallTable[5].Checked == smallTable[6].Checked)
+                    return Checked;
+
+                if (smallTable[7].Checked == Checked && smallTable[7].Checked == smallTable[8].Checked &&
+                    smallTable[8].BackColor == smallTable[9].BackColor)
+                    isWin = true;
+                if (isWin)
+                    return Checked;
+            }
+            return "";
         }
 
         private void ChangeAllButtonColor(Color from, Color to)
@@ -243,8 +301,8 @@ namespace SuperTicTacToe
         private void TurnChange()
         {
             if (turn == "X")
-                turn ="Y";
-            else 
+                turn = "O";
+            else
                 turn = "X";
         }
     }

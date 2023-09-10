@@ -33,6 +33,7 @@
             panel1 = new Panel();
             panel3 = new Panel();
             panel4 = new Panel();
+            btTurn = new Button();
             pnTable.SuspendLayout();
             SuspendLayout();
             // 
@@ -81,11 +82,21 @@
             panel4.Size = new Size(5, 749);
             panel4.TabIndex = 3;
             // 
+            // btTurn
+            // 
+            btTurn.Location = new Point(34, 19);
+            btTurn.Name = "btTurn";
+            btTurn.Size = new Size(112, 34);
+            btTurn.TabIndex = 4;
+            btTurn.Text = "Turn";
+            btTurn.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(854, 826);
+            Controls.Add(btTurn);
             Controls.Add(panel4);
             Controls.Add(panel3);
             Controls.Add(pnTable);
@@ -103,5 +114,6 @@
         private Panel panel2;
         private Panel panel3;
         private Panel panel4;
+        private Button btTurn;
     }
 }
