@@ -17,7 +17,8 @@ namespace SuperTicTacToe
         public List<List<CustomButton>> buttonList = new List<List<CustomButton>>();         //buttonList[y][x]
         public List<List<CustomButton>> smallTableAndOrder = new List<List<CustomButton>>(); //smallTableAndOrder[smalltable][order]
         public string turn = "X";
-        public static int SQUARE_SIZE = 70;
+        public static int SCALE100_BUTTON_SIZE = 48;
+        public static int SQUARE_SIZE;
 
 
         public Main()
@@ -26,6 +27,13 @@ namespace SuperTicTacToe
         }
         private void Main_Load(object sender, EventArgs e)
         {
+            Graphics graphics = CreateGraphics();
+            float dpiX = graphics.DpiX;
+            SQUARE_SIZE = Convert.ToInt32(SCALE100_BUTTON_SIZE * (dpiX / 96));
+            //SQUARE_SIZE = 53;
+            //MessageBox.Show(SQUARE_SIZE.ToString());
+            graphics.Dispose();
+
             btTurn.BackColor = Color.FromArgb(128, 128, 255);
             Button lastButton = new Button() { Width = 0, Location = new Point(0, 0) };
             int padding = 10;
