@@ -17,19 +17,19 @@ Super tic-tac-toe is an advanced version of the classic tic-tac-toe game, played
 
 ## Current Status
 
-The following features have been completed:
+Completed features:
 
 - Check win for each small Tic Tac Toe board.
 - Gameplay for two players on the same device.
 
-The following feature is still in progress:
+In progress:
 
 - Checking the remaining unmarked large Tic Tac Toe boards to determine the win condition for the big board.
 
 ## Technologies Used
 
-Programming language: C#
-Framework: .NET WinForms
+- Programming language: C#
+- Framework: .NET WinForms
 
 ## Screenshot
 <center><i>Game</i></center>
